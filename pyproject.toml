@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "knn-digit-recognizer"
+version = "0.1.0"
+description = ""
+authors = ["Iida Lassila <iida.m.lassila@helsinki.fi>"]
+readme = "README.md"
+packages = [{include = "knn_digit_recognizer"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "^1.26.4"
+scikit-learn = "^1.4.2"
+pillow = "^10.3.0"
+pandas = "^2.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
