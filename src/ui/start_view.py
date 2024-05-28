@@ -8,6 +8,12 @@ from distance_metrics import undirected_hausdorff, directed_hausdorff
 
 class StartView:
     def __init__(self, root):
+
+        """
+        Alustaa StartView-luokan.
+
+        """
+
         self._root = root
         self._frame = None
 
