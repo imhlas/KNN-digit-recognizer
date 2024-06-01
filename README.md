@@ -2,7 +2,7 @@
 
 Application for digit recognizion using MNIST-data and KNN. 
 
-The application is currently under development. At this stage, the user interface displays the distances of the selected digit to 10 chosen digits.
+The application is currently under development.
 
 ## Clone the repository
 
