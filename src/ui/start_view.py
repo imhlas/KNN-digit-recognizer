@@ -1,10 +1,20 @@
 import tkinter as tk
 from tkinter import ttk, constants
 import numpy as np
-import random
-from PIL import Image, ImageTk
+import time
+import math
 from data_loader import MNISTLoader
-from distance_metrics import undirected_hausdorff, directed_hausdorff
+from KNN import KNN
+
+distances = [[math.sqrt(8), math.sqrt(5), 2, math.sqrt(5), math.sqrt(8)],
+             [math.sqrt(5), math.sqrt(2), 1, math.sqrt(2), math.sqrt(5)],
+             [           2,            1, 0,            1,            2],
+             [math.sqrt(5), math.sqrt(2), 1, math.sqrt(2), math.sqrt(5)],
+             [math.sqrt(8), math.sqrt(5), 2, math.sqrt(5), math.sqrt(8)]]
+
+moves = [(1, 0), (0, 1), (-1, 0), (0, -1), (1, 1), (1, -1), (-1, -1), (-1, 1), (0, 2),
+       (0, -2), (2, 0), (-2, 0), (-1, 2), (2, 1), (-1, -2), (1, -2), (-2, 1), (-2, -1),
+       (1, 2), (2, -1), (-2, -2), (-2, 2), (2, -2), (2, 2)]
 
 class StartView:
     def __init__(self, root):
@@ -21,51 +31,47 @@ class StartView:
         self.data, self.target = self.loader.load_data()
         self.X_train, self.X_test, self.y_train, self.y_test = self.loader.split_data()
 
-        self.labels = []
-        self.distances = []
-
         self._initialize()
-        self._show_test_number_and_distances()
 
     def pack(self):
         self._frame.pack(fill=constants.BOTH, expand=True)
 
     def _initialize(self):
         self._frame = ttk.Frame(master=self._root)
+        self._frame.pack(fill=constants.BOTH, expand=True)
 
-        for i in range(len(self.X_train) + 1):
-            label = ttk.Label(master=self._frame)
-            label.grid(row=i, column=0, padx=10, pady=10)
-            self.labels.append(label)
+        # Testinumeron labeli
+        ttk.Label(master=self._frame, text=f"Testinumeron labeli: {self.y_test[0]}").pack(pady=10)
 
-            distance = ttk.Label(master=self._frame)
-            distance.grid(row=i, column=1, padx=10, pady=10)
-            self.distances.append(distance)
+        # k-arvon valinta
+        ttk.Label(master=self._frame, text="Valitse k-arvo:").pack(pady=10)
+        self.k_value = tk.IntVar(value=3)
+        k_entry = ttk.Entry(master=self._frame, textvariable=self.k_value)
+        k_entry.pack(pady=10)
 
-    def _show_test_number_and_distances(self):
+        # Ennusta-painike
+        predict_button = ttk.Button(master=self._frame, text="Ennusta", command=self._predict)
+        predict_button.pack(pady=10)
 
-        single_image_matrix = self.X_test[0]
-        single_image_label = self.y_test[0]
+        # Tulosten näyttö
+        self.result_label = ttk.Label(master=self._frame, text="")
+        self.result_label.pack(pady=10)
 
-        print(single_image_matrix)
+        self.time_label = ttk.Label(master=self._frame, text="")
+        self.time_label.pack(pady=10)
 
-        single_image_points = [(i, j) for i in range(single_image_matrix.shape[0]) for j in range(single_image_matrix.shape[1]) if single_image_matrix[i, j] == 1]
+    def _predict(self):
+        k = self.k_value.get()
+        knn = KNN(self.X_train, self.X_test[0], self.y_train, self.y_test[0], distances, moves, k=k)
 
-        print(single_image_points)
+        start_time = time.time()
+        predicted_label, test_label = knn.predict()
+        elapsed_time = time.time() - start_time
 
-        distances = []
-        
-        for train_image_vector in self.X_train:
-            train_image_points = [(i, j) for i in range(train_image_vector.shape[0]) for j in range(train_image_vector.shape[1]) if train_image_vector[i, j] == 1]
-            distances.append(directed_hausdorff(train_image_points, single_image_points, 'd6'))
+        # Näytä tulokset käyttöliittymässä
+        self.result_label.config(text=f"Ennustettu label: {predicted_label}")
+        self.time_label.config(text=f"Laskentaan käytetty aika: {elapsed_time:.4f} sekuntia")
 
 
-        self.labels[0].config(text=f"Testinumero: {single_image_label}")
 
-        for i in range(len(self.X_train)):
-            self.labels[i + 1].config(text=self.y_train[i])
-            self.distances[i + 1].config(text=f"Etäisyys: {distances[i]}")
 
-        print(f"Vertailunumerot: {self.y_train}")
-
-        print(f"Etäisyydet: {distances}")

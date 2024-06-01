@@ -42,10 +42,10 @@ class MNISTLoader:
                                             ja X_test ja y_test ovat testidatan kuvat ja etiketit.
 
         """
-        X_train = self.data[10:20]
-        X_test = self.data[60000:60010]
-        y_train = self.target[10:20]
-        y_test = self.target[60000:60010]
+        X_train = self.data[:10000]
+        X_test = self.data[60000:60001]
+        y_train = self.target[:10000]
+        y_test = self.target[60000:60001]
 
         return X_train, X_test, y_train, y_test
     
