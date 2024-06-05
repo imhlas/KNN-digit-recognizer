@@ -1,4 +1,5 @@
 import time
+import heapq
 import numpy as np
 import math
 from data_loader import MNISTLoader
@@ -39,7 +40,7 @@ class KNN:
         test_image_points = [(i, j) for i in range(self.test_image.shape[0]) for j in range(self.test_image.shape[1]) if self.test_image[i, j] == 1]
 
 
-        labels_and_distances = []
+        k_nearest = []
 
         for i, (train_image, train_label) in enumerate(zip(self.train_images, self.train_labels)):
             train_image_points = [(i, j) for i in range(train_image.shape[0]) for j in range(train_image.shape[1]) if train_image[i, j] == 1]
@@ -48,20 +49,21 @@ class KNN:
             distance_BA = self.calculator.distance_between_images(train_image_points, test_image_points, self.test_image)
             total_distance = distance_AB + distance_BA
 
-            labels_and_distances.append((train_label, total_distance))
+            # Jos keossa on vähemmän kuin k alkiota, lisätään uusi alkio
+            if len(k_nearest) < self.k:
+                heapq.heappush(k_nearest, (-total_distance, train_label))
+            else:
+                # Jos keossa on jo k alkiota, lisätään uusi alkio vain jos se on pienempi kuin keon maksimi
+                heapq.heappushpop(k_nearest, (-total_distance, train_label))
 
-        return labels_and_distances
+        # Muutetaan keko listaksi ja järjestetään se pienimmästä suurimpaan etäisyyteen
+        k_nearest = sorted([(-dist, label) for dist, label in k_nearest])
+
+        return k_nearest
     
     def predict(self):
         distances = self.calculate_distances()
 
-        # Järjestetään etäisyydet pienimmästä suurimpaan
-        distances.sort(key=lambda x: x[1])
-
-        # Otetaan k lähintä naapuria
-        k_nearest = distances[:self.k]
-
-        # Haetaan näiden naapureiden labelit
-        k_nearest_labels = [label for label, total_distance in k_nearest]
+        k_nearest_labels = [label for total_distance, label in distances]
 
         return k_nearest_labels, self.test_labels

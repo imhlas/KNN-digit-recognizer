@@ -1,5 +1,5 @@
 import math 
-
+import numpy as np
 
 class DistanceCalculator:
     def __init__(self, distances, moves):
@@ -26,7 +26,7 @@ class DistanceCalculator:
         Returns:
             Etäisyys pisteiden välillä.
         """
-        return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
+        return (point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2
     
     def distance_between_images(self, image_a_point_list, image_b_point_list, image_b_matrix):
 
@@ -42,6 +42,8 @@ class DistanceCalculator:
             Etäisyys kuvien välillä.
         """
         sum_distances = 0
+        
+        image_b_mask = np.array(image_b_matrix) == 1
 
         for point_A in image_a_point_list:
             x, y = point_A
@@ -56,9 +58,9 @@ class DistanceCalculator:
                 new_y = y + move[1]
 
                 if 0 <= new_x < 28 and 0 <= new_y < 28:
-                    if image_b_matrix[new_x][new_y] == 1:
+                    if image_b_mask[new_x, new_y]:
                         #löydettiin läheltä piste, tallennetaan etäisyys valmiista matriisista
-                        distance = self.distances[2+move[0]][2+move[1]]
+                        distance = self.distances[3+move[0]][3+move[1]]
                         sum_distances += distance
                         match_found = True
                         break
