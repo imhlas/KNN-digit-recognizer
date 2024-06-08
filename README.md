@@ -14,6 +14,12 @@ The application is currently under development.
 
 ## Run the Application
 
-Navigate to the src directory and run the application with the following command:
+In the root, use command:
 
-```python3 index.py```
+```python3 src/index.py```
+
+## Run tests
+
+In the root, use command:
+
+```pytest src```
