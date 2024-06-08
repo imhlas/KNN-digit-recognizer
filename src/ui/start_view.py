@@ -6,20 +6,6 @@ import math
 from data_loader import MNISTLoader
 from KNN import KNN
 
-distances = [[18, 13, 10, 9, 10, 13, 18],
-             [13, 8, 5, 4, 5, 8, 13],
-             [10, 5, 2, 1, 2, 5, 10],
-             [9, 4, 1, 0, 1, 4, 9],
-             [10, 5, 2, 1, 2, 5, 10],
-             [13, 8, 5, 4, 5, 8, 13],
-            [18, 13, 10, 9, 10, 13, 18]]
-
-moves = [(1, 0), (0, 1), (-1, 0), (0, -1), (1, 1), (1, -1), (-1, -1), (-1, 1), (0, 2),
-       (0, -2), (2, 0), (-2, 0), (-1, 2), (2, 1), (-1, -2), (1, -2), (-2, 1), (-2, -1),
-       (1, 2), (2, -1), (-2, -2), (-2, 2), (2, -2), (2, 2), (0, 3), (0, -3),
-       (3, 0), (-3, 0), (1, 3), (-3, -1), (1, -3), (3, 1), (-1, 3), (-1, -3),
-       (-3, 1), (3, -1), (-3, 2), (3, 2), (2, -3), (-2, -3), (3, -2), (-3, -2),
-       (2, 3), (-2, 3), (-3, -3), (-3, 3), (3, -3), (3, 3)]
 
 class StartView:
     def __init__(self, root):
@@ -36,6 +22,8 @@ class StartView:
         self.data, self.target = self.loader.load_data()
         self.X_train, self.X_test, self.y_train, self.y_test = self.loader.split_data()
 
+        self.test_image_index = None
+
         self.initialize()
 
     def pack(self):
@@ -45,8 +33,20 @@ class StartView:
         self._frame = ttk.Frame(master=self._root)
         self._frame.pack(fill=constants.BOTH, expand=True)
 
-        # Testinumeron labeli
-        ttk.Label(master=self._frame, text=f"Testinumeron labeli: {self.y_test[0]}").pack(pady=10)
+        # Testikuvien valinta
+        ttk.Label(master=self._frame, text="Valitse testikuvana käytettävä numero:").pack(pady=10)
+        
+        self.buttons_frame = ttk.Frame(master=self._frame)
+        self.buttons_frame.pack(pady=10)
+
+        self.test_image_button_1 = ttk.Button(self.buttons_frame, text=f"{self.y_test[0]}", command=self.select_test_image_1)
+        self.test_image_button_1.grid(row=0, column=0, padx=5)
+
+        self.test_image_button_2 = ttk.Button(self.buttons_frame, text=f"{self.y_test[1]}", command=self.select_test_image_2)
+        self.test_image_button_2.grid(row=0, column=1, padx=5)
+
+        self.test_image_button_3 = ttk.Button(self.buttons_frame, text=f"{self.y_test[2]}", command=self.select_test_image_3)
+        self.test_image_button_3.grid(row=0, column=2, padx=5)
 
         # k-arvon valinta
         ttk.Label(master=self._frame, text="Valitse k-arvo:").pack(pady=10)
@@ -65,17 +65,47 @@ class StartView:
         self.time_label = ttk.Label(master=self._frame, text="")
         self.time_label.pack(pady=10)
 
+    def select_test_image_1(self):
+        self.test_image_index = 0
+        self.test_image_button_1.config(style="Selected.TButton")
+        self.test_image_button_2.config(style="TButton")
+        self.test_image_button_3.config(style="TButton")
+
+    def select_test_image_2(self):
+        self.test_image_index = 1
+        self.test_image_button_1.config(style="TButton")
+        self.test_image_button_2.config(style="Selected.TButton")
+        self.test_image_button_3.config(style="TButton")
+
+    def select_test_image_3(self):
+        self.test_image_index = 2
+        self.test_image_button_1.config(style="TButton")
+        self.test_image_button_2.config(style="TButton")
+        self.test_image_button_3.config(style="Selected.TButton")
+
     def predict(self):
-        k = self.k_value.get()
-        knn = KNN(self.X_train, self.X_test[0], self.y_train, self.y_test[0], distances, moves, k=k)
 
-        start_time = time.time()
-        predicted_label, test_label = knn.predict()
-        elapsed_time = time.time() - start_time
+        try:
+            if self.test_image_index is None:
+                raise ValueError("Valitse testikuva ennen ennustamista.")
+            test_image_index = self.test_image_index
 
-        # Näytä tulokset käyttöliittymässä
-        self.result_label.config(text=f"Ennustettu label: {predicted_label}")
-        self.time_label.config(text=f"Laskentaan käytetty aika: {elapsed_time:.4f} sekuntia")
+            test_image = self.X_test[test_image_index]
+            test_label = self.y_test[test_image_index]
+
+            k = self.k_value.get()
+            knn = KNN(self.X_train, test_image, self.y_train, test_label,  k=k)
+
+            start_time = time.time()
+            predicted_label, test_label = knn.predict()
+            elapsed_time = time.time() - start_time
+
+            # Näytä tulokset käyttöliittymässä
+            self.result_label.config(text=f"Testikuva: {test_label}, Ennuste: {predicted_label}")
+            self.time_label.config(text=f"Laskentaan käytetty aika: {elapsed_time:.4f} sekuntia")
+
+        except ValueError as e:
+            self.result_label.config(text=f"Virhe: {str(e)}")
 
 
 

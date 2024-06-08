@@ -1,12 +1,10 @@
-import time
 import heapq
 import numpy as np
-import math
-from data_loader import MNISTLoader
 from distance_calculator import DistanceCalculator
+from config import distances, moves
 
 class KNN:
-    def __init__(self, train_images, test_image, train_labels, test_labels, distance_matrix, movement_matrix, k):
+    def __init__(self, train_images, test_image, train_labels, test_labels, k):
 
         """
         Alustaa KNN-luokan.
@@ -24,10 +22,8 @@ class KNN:
         self.test_image = test_image
         self.train_labels = train_labels
         self.test_labels = test_labels
-        self.distance_matrix = distance_matrix
-        self.movement_matrix = movement_matrix
         self.k = k
-        self.calculator = DistanceCalculator(distance_matrix, movement_matrix)
+        self.calculator = DistanceCalculator(distances, moves)
         
     def calculate_distances(self):
         """

@@ -26,7 +26,7 @@ class MNISTLoader:
 
         mnist = fetch_openml('mnist_784', version=1)
 
-        self.data = mnist['data'].reshape(-1, 28, 28)
+        self.data = mnist['data'].to_numpy().reshape(-1, 28, 28)
         self.target = mnist['target'].astype(np.uint8)
 
         self.data = (self.data > self.threshold_value).astype(np.uint8)
@@ -43,9 +43,9 @@ class MNISTLoader:
 
         """
         X_train = self.data[:10000]
-        X_test = self.data[60000:60001]
-        y_train = self.target[:10000]
-        y_test = self.target[60000:60001]
+        X_test = self.data[60000:60003]
+        y_train = self.target[:10000].to_numpy()
+        y_test = self.target[60000:60003].to_numpy()
 
         return X_train, X_test, y_train, y_test
     
