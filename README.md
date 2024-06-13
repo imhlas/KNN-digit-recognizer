@@ -12,6 +12,12 @@ The application is currently under development.
 
 ```poetry install```
 
+## Activate the virtual environment
+
+Before running the application, activate the virtual environment 
+
+```poetry shell```
+
 ## Run the Application
 
 In the root, use command:
