@@ -2,7 +2,9 @@
 
 Application for digit recognizion using MNIST-data and KNN. 
 
-Instructions for installing and running the app can be found below. More detailed user guide can be found from [user guide](dokumentaatio/user_guide.md).
+Instructions for installing and running the app can be found below.
+
+More detailed user guide can be found from [user guide](dokumentaatio/user_guide.md).
 
 ## Clone the repository
 
