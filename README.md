@@ -14,7 +14,7 @@ The application is currently under development.
 
 ## Activate the virtual environment
 
-Before running the application, activate the virtual environment 
+Before running the application, activate the virtual environment:
 
 ```poetry shell```
 
@@ -22,10 +22,14 @@ Before running the application, activate the virtual environment
 
 In the root, use command:
 
-```python3 src/index.py```
+```poetry run invoke start```
 
 ## Run tests
 
-In the root, use command:
+If you only want to run the unit tests, use command:
 
-```pytest src```
+```pytest run invoke test```
+
+You can also run the unit tests and create coverage report with command:
+
+```pytest run coverage-report```
