@@ -46,6 +46,6 @@ class TestKNN(unittest.TestCase):
         """
         Testaa ennusteen laskeminen.
         """
-        predicted_labels, test_labels = self.knn.predict()
-        self.assertEqual(predicted_labels[0], 1)
-        self.assertEqual(test_labels, self.test_labels[0])
+        predicted_label, test_labels = self.knn.predict()
+        self.assertEqual(predicted_label, 1)
+        self.assertEqual(test_labels[0], self.test_labels[0])
