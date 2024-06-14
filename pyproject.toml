@@ -12,9 +12,11 @@ numpy = "^1.26.4"
 scikit-learn = "^1.4.2"
 pillow = "^10.3.0"
 pandas = "^2.2.2"
+invoke = "^2.2.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.2"
+coverage = "^7.5.3"
 
 [build-system]
 requires = ["poetry-core"]

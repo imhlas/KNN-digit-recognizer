@@ -60,7 +60,7 @@ class DistanceCalculator:
                 if 0 <= new_x < 28 and 0 <= new_y < 28:
                     if image_b_mask[new_x, new_y]:
                         #löydettiin läheltä piste, tallennetaan etäisyys valmiista matriisista
-                        distance = self.distances[3+move[0]][3+move[1]]
+                        distance = self.distances[4+move[0]][4+move[1]]
                         sum_distances += distance
                         match_found = True
                         break

@@ -2,9 +2,10 @@ import tkinter as tk
 from tkinter import ttk, constants
 import numpy as np
 import time
-import math
-from data_loader import MNISTLoader
-from KNN import KNN
+import random
+from data_loader import DataLoader
+from ui.results_view import ResultsView
+from knn import KNN
 
 
 class StartView:
@@ -18,11 +19,13 @@ class StartView:
         self._root = root
         self._frame = None
 
-        self.loader = MNISTLoader()
+        self.loader = DataLoader()
         self.data, self.target = self.loader.load_data()
-        self.X_train, self.X_test, self.y_train, self.y_test = self.loader.split_data()
+        self.train_data, self.test_data, self.train_target, self.test_target = self.loader.split_data()
 
-        self.test_image_index = None
+        self.test_image_count = tk.StringVar(value="5")
+        self.train_image_count = tk.StringVar(value="10000")
+        self.k_value = tk.StringVar(value="3")
 
         self.initialize()
 
@@ -32,25 +35,20 @@ class StartView:
     def initialize(self):
         self._frame = ttk.Frame(master=self._root)
         self._frame.pack(fill=constants.BOTH, expand=True)
-
-        # Testikuvien valinta
-        ttk.Label(master=self._frame, text="Valitse testikuvana käytettävä numero:").pack(pady=10)
         
-        self.buttons_frame = ttk.Frame(master=self._frame)
-        self.buttons_frame.pack(pady=10)
+        # Testikuvien määrän valinta
+        ttk.Label(master=self._frame, text="Valitse testikuvien määrä (1-50):").pack(pady=10)
+        test_image_count_entry = ttk.Entry(master=self._frame, textvariable=self.test_image_count)
+        test_image_count_entry.pack(pady=10)
 
-        self.test_image_button_1 = ttk.Button(self.buttons_frame, text=f"{self.y_test[0]}", command=self.select_test_image_1)
-        self.test_image_button_1.grid(row=0, column=0, padx=5)
+        # Harjoitusdatan määrän valinta
+        ttk.Label(master=self._frame, text="Valitse harjoitusdatan määrä (1-60000):").pack(pady=10)
+        train_image_count_entry = ttk.Entry(master=self._frame, textvariable=self.train_image_count)
+        train_image_count_entry.pack(pady=10)
 
-        self.test_image_button_2 = ttk.Button(self.buttons_frame, text=f"{self.y_test[1]}", command=self.select_test_image_2)
-        self.test_image_button_2.grid(row=0, column=1, padx=5)
-
-        self.test_image_button_3 = ttk.Button(self.buttons_frame, text=f"{self.y_test[2]}", command=self.select_test_image_3)
-        self.test_image_button_3.grid(row=0, column=2, padx=5)
 
         # k-arvon valinta
         ttk.Label(master=self._frame, text="Valitse k-arvo:").pack(pady=10)
-        self.k_value = tk.IntVar(value=3)
         k_entry = ttk.Entry(master=self._frame, textvariable=self.k_value)
         k_entry.pack(pady=10)
 
@@ -62,51 +60,68 @@ class StartView:
         self.result_label = ttk.Label(master=self._frame, text="")
         self.result_label.pack(pady=10)
 
-        self.time_label = ttk.Label(master=self._frame, text="")
-        self.time_label.pack(pady=10)
-
-    def select_test_image_1(self):
-        self.test_image_index = 0
-        self.test_image_button_1.config(style="Selected.TButton")
-        self.test_image_button_2.config(style="TButton")
-        self.test_image_button_3.config(style="TButton")
-
-    def select_test_image_2(self):
-        self.test_image_index = 1
-        self.test_image_button_1.config(style="TButton")
-        self.test_image_button_2.config(style="Selected.TButton")
-        self.test_image_button_3.config(style="TButton")
-
-    def select_test_image_3(self):
-        self.test_image_index = 2
-        self.test_image_button_1.config(style="TButton")
-        self.test_image_button_2.config(style="TButton")
-        self.test_image_button_3.config(style="Selected.TButton")
-
     def predict(self):
 
         try:
-            if self.test_image_index is None:
-                raise ValueError("Valitse testikuva ennen ennustamista.")
-            test_image_index = self.test_image_index
+            test_image_count_str = self.test_image_count.get()
+            train_image_count_str = self.train_image_count.get()
+            k_str = self.k_value.get()
 
-            test_image = self.X_test[test_image_index]
-            test_label = self.y_test[test_image_index]
+            if not test_image_count_str.isdigit() or not train_image_count_str.isdigit() or not k_str.isdigit():
+                raise ValueError("Kaikkien arvojen on oltava positiivisia kokonaislukuja.")
+            
+            test_image_count = int(test_image_count_str)
+            train_image_count = int(train_image_count_str)
+            k = int(k_str)
+            
 
-            k = self.k_value.get()
-            knn = KNN(self.X_train, test_image, self.y_train, test_label,  k=k)
+            if not (1 <= test_image_count <= 50):
+                raise ValueError("Testikuvien määrän tulee olla välillä 1-50.")
+            if not (1 <= train_image_count <= 60000):
+                raise ValueError("Harjoitusdatan määrän tulee olla välillä 1-60000.")
 
-            start_time = time.time()
-            predicted_label, test_label = knn.predict()
-            elapsed_time = time.time() - start_time
+            train_indices = random.sample(range(len(self.train_data)), train_image_count)
+            test_indices = random.sample(range(len(self.test_data)), test_image_count)
 
-            # Näytä tulokset käyttöliittymässä
-            self.result_label.config(text=f"Testikuva: {test_label}, Ennuste: {predicted_label}")
-            self.time_label.config(text=f"Laskentaan käytetty aika: {elapsed_time:.4f} sekuntia")
+            self.X_train = self.train_data[train_indices]
+            self.y_train = self.train_target[train_indices]
+            self.X_test = self.test_data[test_indices]
+            self.y_test = self.test_target[test_indices]
+
+            correct_predictions = 0
+            total_time = 0
+            predictions = []
+
+            for index in range(test_image_count):
+                test_image = self.X_test[index]
+                test_label = self.y_test[index]
+
+                knn = KNN(self.X_train, test_image, self.y_train, test_label, k=k)
+
+                start_time = time.time()
+                predicted_label, _ = knn.predict()
+                elapsed_time = time.time() - start_time
+                total_time += elapsed_time
+
+                predictions.append((test_label, predicted_label))
+
+                if predicted_label == test_label:
+                    correct_predictions += 1
+
+            incorrect_predictions = test_image_count - correct_predictions
+
+            results_view = ResultsView(self._root, correct_predictions, incorrect_predictions, total_time, test_indices, predictions, self.retry)
+            results_view.pack()
+            self._frame.destroy()
 
         except ValueError as e:
             self.result_label.config(text=f"Virhe: {str(e)}")
 
+
+    def retry(self):
+        self._frame.destroy()
+        start_view = StartView(self._root)
+        start_view.pack()
 
 
 

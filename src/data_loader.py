@@ -1,10 +1,10 @@
 import numpy as np
 from sklearn.datasets import fetch_openml
 
-class MNISTLoader:
+class DataLoader:
     def __init__(self, threshold_value=127):
         """
-        Alustaa MNISTLoader-luokan.
+        Alustaa DataLoader-luokan.
 
         Args:
         threshold_value: Arvo, jonka perusteella kuvat binarisoidaan. Oletusarvo on 127.
@@ -42,10 +42,10 @@ class MNISTLoader:
                                             ja X_test ja y_test ovat testidatan kuvat ja etiketit.
 
         """
-        X_train = self.data[:10000]
-        X_test = self.data[60000:60003]
-        y_train = self.target[:10000].to_numpy()
-        y_test = self.target[60000:60003].to_numpy()
+        X_train = self.data[:60000]
+        X_test = self.data[60000:]
+        y_train = self.target[:60000].to_numpy()
+        y_test = self.target[60000:].to_numpy()
 
         return X_train, X_test, y_train, y_test
     

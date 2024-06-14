@@ -62,4 +62,6 @@ class KNN:
 
         k_nearest_labels = [label for total_distance, label in distances]
 
-        return k_nearest_labels, self.test_labels
+        predicted_label = max(set(k_nearest_labels), key=k_nearest_labels.count)
+
+        return predicted_label, self.test_labels

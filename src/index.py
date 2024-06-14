@@ -5,7 +5,7 @@ def main():
 
     window = Tk()
     window.title("KNN-digit-recognizer")
-    window.geometry("600x400") 
+    window.geometry("800x600") 
 
     style = ttk.Style()
     style.configure("Selected.TButton", background="darkgrey")
