@@ -27,15 +27,15 @@ class TestMNISTLoader(unittest.TestCase):
         X_train, X_test, y_train, y_test = self.loader.split_data()
 
         # Tarkistetaan harjoitusdatan muoto
-        self.assertEqual(X_train.shape, (59999, 28, 28))
-        self.assertEqual(y_train.shape, (59999,))
+        self.assertEqual(X_train.shape, (60000, 28, 28))
+        self.assertEqual(y_train.shape, (60000,))
 
         # Tarkistetaan testidatan muoto
-        self.assertEqual(X_test.shape, (9999, 28, 28))
-        self.assertEqual(y_test.shape, (9999,))
-        
+        self.assertEqual(X_test.shape, (10000, 28, 28))
+        self.assertEqual(y_test.shape, (10000,))
+
         # Tarkistetaa, että harjoitusdatan ja testidatan arvot ovat oikein
-        self.assertTrue(np.array_equal(X_train, self.loader.data[:59999]))
-        self.assertTrue(np.array_equal(X_test, self.loader.data[60000:69999]))
-        self.assertTrue(np.array_equal(y_train, self.loader.target[:59999]))
-        self.assertTrue(np.array_equal(y_test, self.loader.target[60000:69999]))
+        self.assertTrue(np.array_equal(X_train, self.loader.data[:60000]))
+        self.assertTrue(np.array_equal(X_test, self.loader.data[60000:]))
+        self.assertTrue(np.array_equal(y_train, self.loader.target[:60000]))
+        self.assertTrue(np.array_equal(y_test, self.loader.target[60000:]))
