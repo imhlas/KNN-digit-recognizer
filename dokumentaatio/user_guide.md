@@ -22,3 +22,9 @@
 - yksikkötestien ja testikattavuusraportin ajaminen
 
   ```poetry run invoke coverage-report```
+
+### Käyttöliittymä
+
+![start_view](kuvat/start_view.png)
+
+![results_view](kuvat/result_view.png)
