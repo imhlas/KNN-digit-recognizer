@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from KNN import KNN
+from knn import KNN
 
 class TestKNN(unittest.TestCase):
 
