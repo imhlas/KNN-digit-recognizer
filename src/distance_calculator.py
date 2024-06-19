@@ -14,19 +14,6 @@ class DistanceCalculator:
 
         self.distances = distances
         self.moves = moves
-
-    def calculate_distance(self, point1, point2):
-        """
-        Laskee etäisyyden kahden pisteen välillä.
-
-        Args:
-            point1: Ensimmäisen pisteen koordinaatit (x, y).
-            point2: Toisen pisteen koordinaatit (x, y).
-
-        Returns:
-            Etäisyys pisteiden välillä.
-        """
-        return (point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2
     
     def distance_between_images(self, image_a_point_list, image_b_point_list, image_b_matrix):
 
@@ -60,8 +47,7 @@ class DistanceCalculator:
                 if 0 <= new_x < 28 and 0 <= new_y < 28:
                     if image_b_mask[new_x, new_y]:
                         #löydettiin läheltä piste, tallennetaan etäisyys valmiista matriisista
-                        distance = self.distances[4+move[0]][4+move[1]]
-                        sum_distances += distance
+                        sum_distances += self.distances[4+move[0]][4+move[1]]
                         match_found = True
                         break
                         #lähellä oleva match löytyi, siirrytään seuraavaan pisteeseen
@@ -69,9 +55,9 @@ class DistanceCalculator:
             if not match_found:
                 min_distance = 1000000
                 for point_B in image_b_point_list:
-                    distance = self.calculate_distance(point_A, point_B)
-                    if distance < min_distance:
-                        min_distance = distance
+                    min_distance = min(min_distance, (point_A[0] - point_B[0]) * (point_A[0] - point_B[0]) + (point_A[1] - point_B[1]) * (point_A[1] - point_B[1]))
                 sum_distances += min_distance
+
+
         
         return sum_distances
