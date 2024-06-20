@@ -10,16 +10,7 @@ class TestDistanceCalculator(unittest.TestCase):
         Alustaa DistanceCalculator-luokan testejä varten tarvittavat muuttujat.
         """
         self.calculator = DistanceCalculator(distances, moves)
-    
-    def test_calculate_distance(self):
-        """
-        Testaa etäisyyden laskemisen kahden pisteen välillä.
-        Käyttää pisteitä (0, 0) ja (3, 4), joiden välinen etäisyys pitäisi olla 25.
-        """
-        point1 = (0, 0)
-        point2 = (3, 4)
-        distance = self.calculator.calculate_distance(point1, point2)
-        self.assertEqual(distance, 25)
+
     
     def test_distance_between_images(self):
         """
@@ -47,7 +38,7 @@ class TestDistanceCalculator(unittest.TestCase):
             image_b_matrix[point] = 1
         
         # Lasketaan odotettu etäisyys käsin
-        expected_distance = sum([min([self.calculator.calculate_distance(a, b) for b in image_b_points]) for a in image_a_points])
+        expected_distance = sum([min([(a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 for b in image_b_points]) for a in image_a_points])
 
         distance = self.calculator.distance_between_images(image_a_points, image_b_points, image_b_matrix)
         self.assertEqual(distance, expected_distance)

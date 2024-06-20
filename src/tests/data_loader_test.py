@@ -9,7 +9,8 @@ class TestMNISTLoader(unittest.TestCase):
         self.loader = DataLoader(threshold_value=127)
 
     def test_load_data(self):
-        data, target = self.loader.load_data()
+        self.loader.load_data()
+        data, target = self.loader.data, self.loader.target
 
         # Tarkistetaan datan muoto
         self.assertEqual(data.shape, (70000, 28, 28))
@@ -24,7 +25,7 @@ class TestMNISTLoader(unittest.TestCase):
         self.loader.load_data()
 
         # Jaetaan data harjoitus- ja testidatoihin
-        X_train, X_test, y_train, y_test = self.loader.split_data()
+        X_train, X_test, y_train, y_test, train_point_lists, test_point_lists, train_binary_matrices, test_binary_matrices = self.loader.split_data(60000)
 
         # Tarkistetaan harjoitusdatan muoto
         self.assertEqual(X_train.shape, (60000, 28, 28))
@@ -33,6 +34,12 @@ class TestMNISTLoader(unittest.TestCase):
         # Tarkistetaan testidatan muoto
         self.assertEqual(X_test.shape, (10000, 28, 28))
         self.assertEqual(y_test.shape, (10000,))
+
+        # Tarkistetaan pistelista ja matriisi
+        self.assertEqual(len(train_point_lists), 60000)
+        self.assertEqual(len(test_point_lists), 10000)
+        self.assertEqual(len(train_binary_matrices), 60000)
+        self.assertEqual(len(test_binary_matrices), 10000)
 
         # Tarkistetaa, että harjoitusdatan ja testidatan arvot ovat oikein
         self.assertTrue(np.array_equal(X_train, self.loader.data[:60000]))
