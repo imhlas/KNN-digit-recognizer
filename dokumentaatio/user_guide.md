@@ -29,7 +29,7 @@ Ohjelma käynnistyy aloitusnäkymään, josta käyttäjä voi valita, montako ha
 
 ![start_view1](kuvat/start_view1.png)
 
-Ohjelmassa tapahtuvan laskennan kesto riippuu harjoitusdatan koosta, joten mikäli haluaa ajaa ohjelmaa nopeasti, kannattaa valita pienin määrä harjoitusdataa.
+**Ohjelmassa tapahtuvan laskennan kesto riippuu harjoitusdatan koosta, joten mikäli haluaa ajaa ohjelmaa nopeasti, kannattaa valita pienin määrä harjoitusdataa.**
 
 Harjoitusdatan valinnan jälkeen ohjelma lataa käytettävän datan ja esikäsittelee sen. Käyttäjä saa ilmoitusviestin, jossa pyydetään odottamaan, sillä datan lataaminen vie jonkin verran aikaa.
 
