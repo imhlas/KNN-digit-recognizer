@@ -30,8 +30,8 @@ In the root, use command:
 
 If you only want to run the unit tests, use command:
 
-```pytest run invoke test```
+```poetry run invoke test```
 
 You can also run the unit tests and create coverage report with command:
 
-```pytest run coverage-report```
+```poetry run invoke coverage-report```
