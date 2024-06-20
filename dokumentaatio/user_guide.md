@@ -29,16 +29,17 @@ Ohjelma käynnistyy aloitusnäkymään, josta käyttäjä voi valita, montako ha
 
 ![start_view1](kuvat/start_view1.png)
 
-Harjoitusdatan valinnan jälkeen ohjelma lataa käytettävän datan ja esikäsittelee sen. Datan lataaminen kestää useita kymmeniä sekunteja, käyttäjä saa näkymään ilmoitusviestin. Kun ohjelmassa käytettävä data on ladattu, pääsee käyttäjä määrittämään testidatan määrän sekä k-arvon:
+Ohjelmassa tapahtuvan laskennan kesto riippuu harjoitusdatan koosta, joten mikäli haluaa ajaa ohjelmaa nopeasti, kannattaa valita pienin määrä harjoitusdataa.
+
+Harjoitusdatan valinnan jälkeen ohjelma lataa käytettävän datan ja esikäsittelee sen. Käyttäjä saa ilmoitusviestin, jossa pyydetään odottamaan, sillä datan lataaminen vie jonkin verran aikaa.
+
+Kun ohjelmassa käytettävä data on ladattu, pääsee käyttäjä määrittämään testidatan määrän sekä k-arvon:
 
 ![start_view2](kuvat/start_view2.png)
 
-
-**Ohjelma toimii tällä hetkellä hyvin hitaasti suurilla syötteillä, joten ohjelmaa kannattaa ajaa melko pienillä syötteillä**
-
 Tulokset aukeavat uuteen näkymään:
 
-![results_view](kuvat/result_view.png)
+![results_view](kuvat/results_view.png)
 
 Tulosnäkymästä käyttäjä voi tarkastella, montako käsinkirjoitettua numeroa pystyttiin ennustamaan oikein ja montako ennustettiin väärin. Lisäksi näkymässä näytetään laskentaan käytetty aika.
 
