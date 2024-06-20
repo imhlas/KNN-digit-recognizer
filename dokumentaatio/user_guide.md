@@ -25,15 +25,14 @@
 
 ### Käyttöliittymä
 
-Ohjelma käynnistyy aloitusnäkymään, josta käyttäjä voi määrittää haluamansa arvot seuraaville muuttujille:
+Ohjelma käynnistyy aloitusnäkymään, josta käyttäjä voi valita, montako harjoituskuvaa ohjelmassa käytetään mallin kouluttamiseen:
 
-![start_view](kuvat/start_view.png)
+![start_view1](kuvat/start_view1.png)
 
-- testikuvien määrä (montako kuvaa ohjelmassa pyritään ennustamaan)
-- harjoituskuvien määrä (montako kuvaa käytetään mallin kouluttamiseen)
-- k-arvo (monenko naapurin perusteella ennuste nääritetään)
+Harjoitusdatan valinnan jälkeen ohjelma lataa käytettävän datan ja esikäsittelee sen. Datan lataaminen kestää useita kymmeniä sekunteja, käyttäjä saa näkymään ilmoitusviestin. Kun ohjelmassa käytettävä data on ladattu, pääsee käyttäjä määrittämään testidatan määrän sekä k-arvon:
 
-Ohjelma käyttää siis käyttäjän valitsemaa määrää satunnaisesti valittuja testi- ja harjoituskuvia.
+![start_view2](kuvat/start_view2.png)
+
 
 **Ohjelma toimii tällä hetkellä hyvin hitaasti suurilla syötteillä, joten ohjelmaa kannattaa ajaa melko pienillä syötteillä**
 
@@ -43,4 +42,4 @@ Tulokset aukeavat uuteen näkymään:
 
 Tulosnäkymästä käyttäjä voi tarkastella, montako käsinkirjoitettua numeroa pystyttiin ennustamaan oikein ja montako ennustettiin väärin. Lisäksi näkymässä näytetään laskentaan käytetty aika.
 
-Taulukosta käyttäjä pystyy tarkastelemaan yksityiskohtaisemmin, mitkä satunnaisesti valitut käsinkirjoitetut numerot valikoituvat testaukseen ja minkä ennusteen algoritmi niille antoi.
+Taulukosta käyttäjä pystyy tarkastelemaan yksityiskohtaisemmin, mitkä satunnaisesti valitut käsinkirjoitetut numerot valikoituvat testaukseen ja minkä ennusteen algoritmi niille antoi. Taulukko näyttää myös kaikki naapuriarvot, joita laskennassa saatiin.
