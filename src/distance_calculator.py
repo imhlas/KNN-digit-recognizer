@@ -29,13 +29,11 @@ class DistanceCalculator:
             Etäisyys kuvien välillä.
         """
         sum_distances = 0
-        
-        image_b_mask = np.array(image_b_matrix) == 1
 
         for point_A in image_a_point_list:
             x, y = point_A
 
-            if image_b_matrix[x][y] == 1:
+            if image_b_matrix[x][y]:
                 continue #siirrytään seuraavaan pisteeseen, koska täydellinen match löytyi
 
             match_found = False
@@ -45,7 +43,7 @@ class DistanceCalculator:
                 new_y = y + move[1]
 
                 if 0 <= new_x < 28 and 0 <= new_y < 28:
-                    if image_b_mask[new_x, new_y]:
+                    if image_b_matrix[new_x, new_y]:
                         #löydettiin läheltä piste, tallennetaan etäisyys valmiista matriisista
                         sum_distances += self.distances[4+move[0]][4+move[1]]
                         match_found = True
