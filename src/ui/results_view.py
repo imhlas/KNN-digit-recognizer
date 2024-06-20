@@ -26,17 +26,20 @@ class ResultsView:
         ttk.Label(master=self._frame, text=f"Laskentaan käytetty kokonaisaika: {self.total_time:.4f} sekuntia").pack(pady=10)
 
         # Taulukko testikuvista ja ennusteista
-        columns = ("#1", "#2")
+        columns = ("#1", "#2", "#3")
         tree = ttk.Treeview(master=self._frame, columns=columns, show="headings", selectmode="none")
         tree.heading("#1", text="Oikea arvo")
         tree.heading("#2", text="Ennuste")
+        tree.heading("#3", text="Naapurit")
 
         # Keskittää arvot sarakkeissa
         tree.column("#1", anchor="center")
         tree.column("#2", anchor="center")
+        tree.column("#3", anchor="center")
 
-        for i, (test_label, predicted_label) in enumerate(self.predictions):
-            tree.insert("", "end", values=(test_label, predicted_label))
+        for i, (test_label, predicted_label, neighbors) in enumerate(self.predictions):
+            neighbors_str = ', '.join(map(str, neighbors))
+            tree.insert("", "end", values=(test_label, predicted_label, neighbors_str))
 
         tree.pack(pady=10, fill=constants.BOTH, expand=True)
 
