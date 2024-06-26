@@ -1,14 +1,21 @@
+"""
+Tiedosto, joka sisältää testit KNN-luokalle.
+"""
+
 import unittest
 import numpy as np
 from knn import KNN
 
 class TestKNN(unittest.TestCase):
+    """
+    Luokka, joka testaa KNN-luokkaa.
+    """
 
     def setUp(self):
         """
         Alustaa testit.
         """
-        
+
         # Luodaan täynnä nollia olevat 28x28 matriisit harjoitus- ja testikuville
         self.train_images = np.zeros((2, 28, 28), dtype=int)
         self.test_images = np.zeros((2, 28, 28), dtype=int)
@@ -45,14 +52,14 @@ class TestKNN(unittest.TestCase):
         self.test_binary_matrices = [(self.test_images[0] == 1), (self.test_images[1] == 1)]
 
         self.knn = KNN(
-            self.k, 
-            self.train_images, 
-            self.test_images, 
-            self.train_labels, 
-            self.test_labels, 
-            self.train_point_lists, 
-            self.test_point_lists, 
-            self.train_binary_matrices, 
+            self.k,
+            self.train_images,
+            self.test_images,
+            self.train_labels,
+            self.test_labels,
+            self.train_point_lists,
+            self.test_point_lists,
+            self.train_binary_matrices,
             self.test_binary_matrices
         )
 
@@ -60,15 +67,18 @@ class TestKNN(unittest.TestCase):
         """
         Testaa etäisyyksien laskeminen testikuvan ja harjoituskuvien välillä.
         """
-        k_nearest = self.knn.calculate_distances(self.test_point_lists[0], self.test_binary_matrices[0])
+        k_nearest = self.knn.calculate_distances(self.test_point_lists[0],
+                                                self.test_binary_matrices[0])
+
         self.assertEqual(len(k_nearest), self.k)
-        self.assertEqual(k_nearest[0][1], 0)  
+        self.assertEqual(k_nearest[0][1], 0)
 
     def test_predict(self):
         """
         Testaa ennusteen laskeminen.
         """
-        predicted_label, test_labels = self.knn.predict(self.test_point_lists[0], self.test_binary_matrices[0])
+        predicted_label, test_labels = self.knn.predict(self.test_point_lists[0],
+                                                        self.test_binary_matrices[0])
         self.assertEqual(predicted_label, 0)
         self.assertEqual(test_labels[0], self.test_labels[0])
 
@@ -76,7 +86,7 @@ class TestKNN(unittest.TestCase):
         """
         Testaa run-metodi.
         """
-        correct_predictions, incorrect_predictions, total_time, predictions, test_indices = self.knn.run(2)
+        correct_predictions, incorrect_predictions, total_time, predictions,test_indices = self.knn.run(2)
 
         # Tarkistetaan ennustusten määrä
         self.assertEqual(correct_predictions, 2)

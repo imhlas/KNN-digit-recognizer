@@ -1,6 +1,13 @@
+""""
+Moduuli, joka vastaa käyttöliittymän hallinnasta.
+"""
+
 from ui.start_view import StartView
 
 class UI:
+    """
+    Luokka, joka hallinnoi käyttöliittymää.
+    """
     def __init__(self, root):
         """
         Alustaa UI-luokan.

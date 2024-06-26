@@ -1,14 +1,26 @@
+"""
+Moduuli, joka sisältää testit DataLoader-luokalle.
+"""
+
 import unittest
 import numpy as np
-from sklearn.datasets import fetch_openml
-from data_loader import DataLoader 
+from data_loader import DataLoader
 
 class TestMNISTLoader(unittest.TestCase):
+    """
+    Luokka, joka testaa DataLoader-luokkaa.
+    """
 
     def setUp(self):
+        """
+        Alustaa testit.
+        """
         self.loader = DataLoader(threshold_value=127)
 
     def test_load_data(self):
+        """
+        Testaa datan lataamista.
+        """
         self.loader.load_data()
         data, target = self.loader.data, self.loader.target
 
@@ -21,18 +33,21 @@ class TestMNISTLoader(unittest.TestCase):
         self.assertTrue(np.issubdtype(target.dtype, np.integer))
 
     def test_split_data(self):
+        """
+        Testaa datan jakamista harjoitus- ja testidataan.
+        """
 
         self.loader.load_data()
 
         # Jaetaan data harjoitus- ja testidatoihin
-        X_train, X_test, y_train, y_test, train_point_lists, test_point_lists, train_binary_matrices, test_binary_matrices = self.loader.split_data(60000)
+        x_train, x_test, y_train, y_test, train_point_lists, test_point_lists, train_binary_matrices, test_binary_matrices = self.loader.split_data(60000)
 
         # Tarkistetaan harjoitusdatan muoto
-        self.assertEqual(X_train.shape, (60000, 28, 28))
+        self.assertEqual(x_train.shape, (60000, 28, 28))
         self.assertEqual(y_train.shape, (60000,))
 
         # Tarkistetaan testidatan muoto
-        self.assertEqual(X_test.shape, (10000, 28, 28))
+        self.assertEqual(x_test.shape, (10000, 28, 28))
         self.assertEqual(y_test.shape, (10000,))
 
         # Tarkistetaan pistelista ja matriisi
@@ -42,7 +57,7 @@ class TestMNISTLoader(unittest.TestCase):
         self.assertEqual(len(test_binary_matrices), 10000)
 
         # Tarkistetaa, että harjoitusdatan ja testidatan arvot ovat oikein
-        self.assertTrue(np.array_equal(X_train, self.loader.data[:60000]))
-        self.assertTrue(np.array_equal(X_test, self.loader.data[60000:]))
+        self.assertTrue(np.array_equal(x_train, self.loader.data[:60000]))
+        self.assertTrue(np.array_equal(x_test, self.loader.data[60000:]))
         self.assertTrue(np.array_equal(y_train, self.loader.target[:60000]))
         self.assertTrue(np.array_equal(y_test, self.loader.target[60000:]))

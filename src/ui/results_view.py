@@ -1,8 +1,27 @@
-import tkinter as tk
+"""
+Moduuli, joka sisältää ResultsView-luokan.
+"""
+
 from tkinter import ttk, constants
 
 class ResultsView:
-    def __init__(self, root, correct_predictions, incorrect_predictions, total_time, test_indices, predictions, retry_callback):
+    """
+    Näkymä, joka esittää tulokset KNN-luokittelun jälkeen.
+    """
+    def __init__(self, root, correct_predictions, incorrect_predictions,
+                  total_time, test_indices, predictions, retry_callback):
+
+        """
+        Alustaa ResultsView-luokan.
+
+        Args:
+            correct_predictions: Oikein ennustettujen kuvien määrä.
+            incorrect_predictions: Väärin ennustettujen kuvien määrä.
+            total_time: Laskentaan käytetty kokonaisaika sekunneissa.
+            test_indices: Lista testikuvien indekseistä.
+            predictions: Ennusteet testikuvista.
+            retry_callback: funktio, jota kutsutaan kun "Ennusta uudestaan" -painiketta painetaan.
+        """
         self._root = root
         self._frame = None
         self.correct_predictions = correct_predictions
@@ -15,15 +34,29 @@ class ResultsView:
         self.initialize()
 
     def pack(self):
+        """
+        Pakkaa ResultsView-näkymän.
+        """
         self._frame.pack(fill=constants.BOTH, expand=True)
 
     def initialize(self):
+        """
+        Luo käyttöliittymäkomponentit ResultsView-luokkaan.
+        """
         self._frame = ttk.Frame(master=self._root)
         self._frame.pack(fill=constants.BOTH, expand=True)
 
-        ttk.Label(master=self._frame, text=f"Oikein ennustettuja kuvia: {self.correct_predictions}").pack(pady=10)
-        ttk.Label(master=self._frame, text=f"Väärin ennustettuja kuvia: {self.incorrect_predictions}").pack(pady=10)
-        ttk.Label(master=self._frame, text=f"Laskentaan käytetty kokonaisaika: {self.total_time:.4f} sekuntia").pack(pady=10)
+        ttk.Label(
+            master=self._frame,
+            text=f"Oikein ennustettuja kuvia: {self.correct_predictions}").pack(pady=10)
+
+        ttk.Label(
+            master=self._frame,
+            text=f"Väärin ennustettuja kuvia: {self.incorrect_predictions}").pack(pady=10)
+
+        ttk.Label(
+            master=self._frame,
+            text=f"Laskentaan käytetty kokonaisaika: {self.total_time:.4f} sekuntia").pack(pady=10)
 
         # Taulukko testikuvista ja ennusteista
         columns = ("#1", "#2", "#3")
@@ -52,5 +85,8 @@ class ResultsView:
         close_button.pack(pady=10)
 
     def retry(self):
+        """
+        Käynnistää ResultsView-näkymän uudelleen.
+        """
         self._frame.destroy()
         self.retry_callback()

@@ -1,12 +1,19 @@
+"""
+Moduuli, joka sisältää KNN-luokan
+"""
+
 import heapq
 import time
 import random
-import numpy as np
 from distance_calculator import DistanceCalculator
 from config import distances, moves
 
 class KNN:
-    def __init__(self, k, train_data, test_data, train_labels, test_labels, train_point_lists, test_point_lists, train_binary_matrices, test_binary_matrices):
+    """
+    Luokka, joka edustaa K-lähimpien naapurien luokittelijaa.
+    """
+    def __init__(self, k, train_data, test_data, train_labels, test_labels,
+                train_point_lists, test_point_lists, train_binary_matrices, test_binary_matrices):
         """
         Alustaa KNN-luokan.
 
@@ -18,8 +25,8 @@ class KNN:
             test_labels: Testiaineiston numeeriset arvot.
             train_point_lists: Lista harjoitusaineiston pisteistä.
             test_point_lists: Lista testiaineiston pisteistä.
-            train_binary_matrices: Lista harjoitusaineiston binäärimatriceista.
-            test_binary_matrices: Lista testiaineiston binäärimatriceista.
+            train_binary_matrices: Lista harjoitusaineiston binäärimatriiseista.
+            test_binary_matrices: Lista testiaineiston binäärimatriiseista.
         """
         self.k = k
         self.train_data = train_data
@@ -46,9 +53,14 @@ class KNN:
             train_label = self.train_labels[i]
             train_image_binary = self.train_binary_matrices[i]
 
-            distance_AB = self.calculator.distance_between_images(test_image_points, train_image_points, train_image_binary)
-            distance_BA = self.calculator.distance_between_images(train_image_points, test_image_points, test_binary_matrix)
-            total_distance = distance_AB + distance_BA
+            distance_ab = self.calculator.distance_between_images(test_image_points,
+                                                                train_image_points,
+                                                                train_image_binary)
+
+            distance_ba = self.calculator.distance_between_images(train_image_points,
+                                                                test_image_points,
+                                                                test_binary_matrix)
+            total_distance = distance_ab + distance_ba
 
             if len(k_nearest) < self.k:
                 heapq.heappush(k_nearest, (-total_distance, train_label))
@@ -59,15 +71,33 @@ class KNN:
         return k_nearest
 
     def predict(self, test_image_points, test_binary_matrix):
-        distances = self.calculate_distances(test_image_points, test_binary_matrix)
-        k_nearest_labels = [label for total_distance, label in distances]
+        """
+        Ennustaa testikuvan luokan perustuen lähimpiin naapureihin.
+
+        Palauttaa:
+            Tuplen, joka sisältää ennustetun arvon ja naapureiden luettelot.
+        """
+
+        calculated_distances = self.calculate_distances(test_image_points, test_binary_matrix)
+        k_nearest_labels = [label for total_distance, label in calculated_distances]
         predicted_label = max(set(k_nearest_labels), key=k_nearest_labels.count)
         return predicted_label, k_nearest_labels
 
     def run(self, test_image_count):
+
+        """
+        Suorittaa KNN-algoritmin testikuvilla.
+
+        Args:
+            test_image_count: Testikuvien määrä
+
+        Palauttaa:
+            Tuplen, joka sisältää oikeiden ennusteiden määrän,
+            virheellisten ennusteiden määrän, kokonaisajan, ennusteet ja testi-indeksit.
+        """
         test_indices = random.sample(range(len(self.test_data)), test_image_count)
 
-        X_test = self.test_data[test_indices]
+        x_test = self.test_data[test_indices]
         y_test = self.test_labels[test_indices]
         test_points = [self.test_point_lists[i] for i in test_indices]
         test_binary_matrices = [self.test_binary_matrices[i] for i in test_indices]
@@ -77,7 +107,6 @@ class KNN:
         predictions = []
 
         for index in range(test_image_count):
-            test_image = X_test[index]
             test_label = y_test[index]
             test_image_points = test_points[index]
             test_binary_matrix = test_binary_matrices[index]
