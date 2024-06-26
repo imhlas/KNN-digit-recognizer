@@ -97,7 +97,6 @@ class KNN:
         """
         test_indices = random.sample(range(len(self.test_data)), test_image_count)
 
-        x_test = self.test_data[test_indices]
         y_test = self.test_labels[test_indices]
         test_points = [self.test_point_lists[i] for i in test_indices]
         test_binary_matrices = [self.test_binary_matrices[i] for i in test_indices]

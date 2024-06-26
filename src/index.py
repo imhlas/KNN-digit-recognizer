@@ -10,6 +10,9 @@ from tkinter import Tk, ttk
 from ui.ui import UI
 
 def main():
+    """
+    Sovelluksen pääfunktio, joka käynnistää käyttöliittymän.
+    """
 
     window = Tk()
     window.title("KNN-digit-recognizer")

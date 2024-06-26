@@ -86,7 +86,8 @@ class TestKNN(unittest.TestCase):
         """
         Testaa run-metodi.
         """
-        correct_predictions, incorrect_predictions, total_time, predictions,test_indices = self.knn.run(2)
+        (correct_predictions, incorrect_predictions,
+         total_time, predictions,test_indices) = self.knn.run(2)
 
         # Tarkistetaan ennustusten määrä
         self.assertEqual(correct_predictions, 2)

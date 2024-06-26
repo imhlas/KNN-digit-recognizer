@@ -9,7 +9,7 @@ class DataLoader:
     """
     Luokka, joka lataa MNIST-datan OpenML-palvelusta ja prosessoi sen.
     """
-    
+
     def __init__(self, threshold_value=127):
         """
         Alustaa DataLoader-luokan.
@@ -80,5 +80,6 @@ class DataLoader:
         point_lists_test = self.point_lists[60000:]
         binary_matrices_test = self.binary_matrices[60000:]
 
-        return x_train, x_test, y_train, y_test, point_lists_train, point_lists_test, binary_matrices_train, binary_matrices_test
+        return (x_train, x_test, y_train, y_test, point_lists_train, point_lists_test,
+                binary_matrices_train, binary_matrices_test)
     

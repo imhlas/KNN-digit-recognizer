@@ -104,7 +104,11 @@ class StartView:
         """
         self.loader = DataLoader()
         self.loader.load_data()
-        self.train_data, self.test_data, self.train_target, self.test_target, self.train_point_lists, self.test_point_lists, self.train_binary_matrices, self.test_binary_matrices = self.loader.split_data(train_size)
+
+        (self.train_data, self.test_data, self.train_target, self.test_target,
+        self.train_point_lists, self.test_point_lists, self.train_binary_matrices,
+        self.test_binary_matrices) = self.loader.split_data(train_size)
+
         self.select_test_image_count()
 
     def select_test_image_count(self):
@@ -143,14 +147,16 @@ class StartView:
             train_image_count_str = self.train_image_count.get()
             k_str = self.k_value.get()
 
-            if not test_image_count_str.isdigit() or not train_image_count_str.isdigit() or not k_str.isdigit():
+            if (not test_image_count_str.isdigit() or
+                not train_image_count_str.isdigit() or
+                not k_str.isdigit()):
                 raise ValueError("Kaikkien arvojen on oltava positiivisia kokonaislukuja.")
 
             test_image_count = int(test_image_count_str)
             train_image_count = int(train_image_count_str)
             k = int(k_str)
 
-            if not (1 <= test_image_count <= 50):
+            if not 1 <= test_image_count <= 50:
                 raise ValueError("Testikuvien määrän tulee olla välillä 1-50.")
             if train_image_count not in [10000, 30000, 60000]:
                 raise ValueError("Harjoitusdatan määrän tulee olla 10000, 30000 tai 60000.")
@@ -165,7 +171,8 @@ class StartView:
                       train_binary_matrices=self.train_binary_matrices[:train_image_count],
                       test_binary_matrices=self.test_binary_matrices)
 
-            correct_predictions, incorrect_predictions, total_time, predictions, test_indices = knn.run(test_image_count)
+            (correct_predictions, incorrect_predictions, total_time,
+             predictions, test_indices) = knn.run(test_image_count)
 
             results_view = ResultsView(
                             self._root, correct_predictions, incorrect_predictions,

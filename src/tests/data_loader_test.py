@@ -40,7 +40,8 @@ class TestMNISTLoader(unittest.TestCase):
         self.loader.load_data()
 
         # Jaetaan data harjoitus- ja testidatoihin
-        x_train, x_test, y_train, y_test, train_point_lists, test_point_lists, train_binary_matrices, test_binary_matrices = self.loader.split_data(60000)
+        (x_train, x_test, y_train, y_test, train_point_lists, test_point_lists,
+         train_binary_matrices, test_binary_matrices) = self.loader.split_data(60000)
 
         # Tarkistetaan harjoitusdatan muoto
         self.assertEqual(x_train.shape, (60000, 28, 28))
