@@ -13,6 +13,12 @@
 
 ![coverage](kuvat/coverage_report.png)
 
+## Pylint
+
+Koodin laadun varmistamista ja parantamista varten projektissa on otettu käyttöön pylint. Tämänhetkisen koodin saama pylint-arvosana on korkea:
+
+![pylint](kuvat/pylint.png)
+
 ## Suorituskykytestaus
 
 Suorituskyvyn testaamista toteutettiin projektissa ohjelman ulkopuolisella yksinkertaisella funktiolla, joka käytännössä ajoi KNN-luokan oliota erilaisilla parametreilla. Testauksessa tarkasteltiin seuraavia asioita:
