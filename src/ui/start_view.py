@@ -144,22 +144,19 @@ class StartView:
         """
         try:
             test_image_count_str = self.test_image_count.get()
-            train_image_count_str = self.train_image_count.get()
             k_str = self.k_value.get()
 
             if (not test_image_count_str.isdigit() or
-                not train_image_count_str.isdigit() or
                 not k_str.isdigit()):
                 raise ValueError("Kaikkien arvojen on oltava positiivisia kokonaislukuja.")
 
             test_image_count = int(test_image_count_str)
-            train_image_count = int(train_image_count_str)
             k = int(k_str)
 
             if not 1 <= test_image_count <= 50:
                 raise ValueError("Testikuvien määrän tulee olla välillä 1-50.")
-            if train_image_count not in [10000, 30000, 60000]:
-                raise ValueError("Harjoitusdatan määrän tulee olla 10000, 30000 tai 60000.")
+            
+            train_image_count = int(self.train_image_count.get())
 
             knn = KNN(k=k,
                       train_data=self.train_data[:train_image_count],
