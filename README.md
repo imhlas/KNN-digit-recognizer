@@ -1,32 +1,36 @@
-# KNN-digit-recognizer
+# Application for Digit Recognition using KNN algorithm
 
-Application for digit recognizion using MNIST-data and KNN. 
+This application utilizes the KNN algorithm (K-Nearest Neighbors) trained on MNIST data to demonstrate its applicability in image recognition tasks.
 
-Instructions for installing and running the app can be found below.
+Key features:
 
-More detailed user guide can be found from [user guide](dokumentaatio/user_guide.md).
+- KNN algorithm: Utilizes the K-Nearest Neighbors algorithm for digit recognition from MNIST data.
+- MNIST data: Leverages the widely-used MNIST dataset, which contains thousands of handwritten digits.
+- Parameter tuning: Allows users to modify KNN parameters and observe changes in the recognition results.
 
-## Clone the repository
+## Instructions for installing and running the app
+
+### Clone the repository
 
 ```git clone https://github.com/imhlas/KNN-digit-recognizer```
 
-## Install Dependencies
+### Install Dependencies
 
 ```poetry install```
 
-## Activate the virtual environment
+### Activate the virtual environment
 
 Before running the application, activate the virtual environment:
 
 ```poetry shell```
 
-## Run the Application
+### Run the Application
 
 In the root, use command:
 
 ```poetry run invoke start```
 
-## Run tests
+### Run tests
 
 If you only want to run the unit tests, use command:
 
